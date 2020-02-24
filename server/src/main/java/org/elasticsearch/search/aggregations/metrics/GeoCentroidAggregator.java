@@ -115,7 +115,7 @@ final class GeoCentroidAggregator extends MetricsAggregator {
                     // executing against geo-shape fields.
                     for (int i = 0; i < valueCount; ++i) {
                         MultiGeoValues.GeoValue value = values.nextValue();
-                        int compares = DimensionalShapeType.COMPARATOR.compare(shapeType, value.dimensionalShapeType());
+                        int compares = shapeType.compareTo(value.dimensionalShapeType());
                         if (compares < 0) {
                             double coordinateWeight = value.weight();
                             compensatedSumLat.reset(coordinateWeight * value.lat(), 0.0);

@@ -57,9 +57,9 @@ public class TriangleTreeTests extends ESTestCase {
     public void testDimensionalShapeType() throws IOException {
         GeoShapeIndexer indexer = new GeoShapeIndexer(true, "test");
         assertDimensionalShapeType(randomPoint(false), DimensionalShapeType.POINT);
-        assertDimensionalShapeType(randomMultiPoint(false), DimensionalShapeType.MULTIPOINT);
-        assertDimensionalShapeType(randomLine(false), DimensionalShapeType.LINESTRING);
-        assertDimensionalShapeType(randomMultiLine(false), DimensionalShapeType.MULTILINESTRING);
+        assertDimensionalShapeType(randomMultiPoint(false), DimensionalShapeType.POINT);
+        assertDimensionalShapeType(randomLine(false), DimensionalShapeType.LINE);
+        assertDimensionalShapeType(randomMultiLine(false), DimensionalShapeType.LINE);
         Geometry randoPoly = indexer.prepareForIndexing(randomValueOtherThanMany(g -> {
             try {
                 Geometry newGeo = indexer.prepareForIndexing(g);
@@ -69,20 +69,20 @@ public class TriangleTreeTests extends ESTestCase {
             }
         }, () -> randomPolygon(false)));
         assertDimensionalShapeType(randoPoly, DimensionalShapeType.POLYGON);
-        assertDimensionalShapeType(indexer.prepareForIndexing(randomMultiPolygon(false)), DimensionalShapeType.MULTIPOLYGON);
+        assertDimensionalShapeType(indexer.prepareForIndexing(randomMultiPolygon(false)), DimensionalShapeType.POLYGON);
         assertDimensionalShapeType(randomRectangle(), DimensionalShapeType.POLYGON);
         assertDimensionalShapeType(randomFrom(
             new GeometryCollection<>(Collections.singletonList(randomPoint(false))),
             new GeometryCollection<>(Collections.singletonList(randomMultiPoint(false))),
             new GeometryCollection<>(Collections.singletonList(
                 new GeometryCollection<>(Arrays.asList(randomPoint(false), randomMultiPoint(false))))))
-            , DimensionalShapeType.GEOMETRYCOLLECTION_POINTS);
+            , DimensionalShapeType.POINT);
         assertDimensionalShapeType(randomFrom(
             new GeometryCollection<>(Arrays.asList(randomPoint(false), randomLine(false))),
             new GeometryCollection<>(Arrays.asList(randomMultiPoint(false), randomMultiLine(false))),
             new GeometryCollection<>(Collections.singletonList(
                 new GeometryCollection<>(Arrays.asList(randomPoint(false), randomLine(false))))))
-            , DimensionalShapeType.GEOMETRYCOLLECTION_LINES);
+            , DimensionalShapeType.LINE);
         assertDimensionalShapeType(randomFrom(
             new GeometryCollection<>(Arrays.asList(randomPoint(false), indexer.prepareForIndexing(randomLine(false)),
                 indexer.prepareForIndexing(randomPolygon(false)))),
@@ -90,7 +90,7 @@ public class TriangleTreeTests extends ESTestCase {
             new GeometryCollection<>(Collections.singletonList(
                 new GeometryCollection<>(Arrays.asList(indexer.prepareForIndexing(randomLine(false)),
                     indexer.prepareForIndexing(randomPolygon(false)))))))
-            , DimensionalShapeType.GEOMETRYCOLLECTION_POLYGONS);
+            , DimensionalShapeType.POLYGON);
     }
 
 
