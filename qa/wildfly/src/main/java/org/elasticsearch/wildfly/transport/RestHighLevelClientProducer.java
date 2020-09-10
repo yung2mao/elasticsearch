@@ -19,18 +19,27 @@
 
 package org.elasticsearch.wildfly.transport;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import org.apache.http.HttpHost;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.SuppressForbidden;
+import org.elasticsearch.common.io.PathUtils;
 
-import java.util.Collections;
-import java.util.Set;
+import javax.enterprise.inject.Produces;
+import java.nio.file.Path;
 
-@ApplicationPath("/transport")
-public class TransportClientActivator extends Application {
+@SuppressWarnings("unused")
+public final class RestHighLevelClientProducer {
 
-    @Override
-    public Set<Class<?>> getClasses() {
-        return Collections.singleton(TransportClientEmployeeResource.class);
+    @Produces
+    public RestHighLevelClient createRestHighLevelClient() {
+        String httpUri = System.getProperty("elasticsearch.uri");
+
+        return new RestHighLevelClient(RestClient.builder(HttpHost.create(httpUri)));
     }
 
+    @SuppressForbidden(reason = "get path not configured in environment")
+    private Path getPath(final String elasticsearchProperties) {
+        return PathUtils.get(elasticsearchProperties);
+    }
 }

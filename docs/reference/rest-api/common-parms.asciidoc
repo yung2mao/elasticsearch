@@ -328,6 +328,13 @@ tag::help[]
 to `false`.
 end::help[]
 
+tag::bulk-id[]
+`_id`::
+(Optional, string)
+The document ID.
+If no ID is specified, a document ID is automatically generated.
+end::bulk-id[]
+
 tag::if_primary_term[]
 `if_primary_term`::
 (Optional, integer) Only perform the operation if the document has
@@ -391,6 +398,13 @@ tag::index[]
 (Optional, string) Comma-separated list or wildcard expression of index names
 used to limit the request.
 end::index[]
+
+tag::bulk-index[]
+`_index`::
+(Optional, string)
+The name of the target index.
+Required if not specified as a path parameter.
+end::bulk-index[]
 
 tag::index-metric[]
 `<index-metric>`::
@@ -678,7 +692,7 @@ end::request_cache[]
 tag::requests_per_second[]
 `requests_per_second`::
 (Optional, integer) The throttle for this request in sub-requests per second.
--1 means no throttle. Defaults to 0.
+Defaults to `-1` (no throttle).
 end::requests_per_second[]
 
 tag::routing[]
@@ -875,12 +889,6 @@ end::time[]
 tag::timeoutparms[]
 
 tag::timeout[]
-`timeout`::
-(Optional, <<time-units, time units>>) Specifies the period of time to wait for
-a response. If no response is received before the timeout expires, the request
-fails and returns an error. Defaults to `30s`.
-end::timeout[]
-
 tag::master-timeout[]
 `master_timeout`::
 (Optional, <<time-units, time units>>) Specifies the period of time to wait for
@@ -888,6 +896,11 @@ a connection to the master node. If no response is received before the timeout
 expires, the request fails and returns an error. Defaults to `30s`.
 end::master-timeout[]
 
+`timeout`::
+(Optional, <<time-units, time units>>) Specifies the period of time to wait for
+a response. If no response is received before the timeout expires, the request
+fails and returns an error. Defaults to `30s`.
+end::timeout[]
 end::timeoutparms[]
 
 tag::type[]
